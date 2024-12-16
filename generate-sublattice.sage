@@ -171,7 +171,16 @@ Example:
     
     sage generate-sublattice.sage D 5
 
-    sage generate-sublattice.sage --draw-graph --affine=1021020 A 2"""
+      verifies that is a cubical lattice for D5
+
+    sage generate-sublattice.sage --draw-graph --affine=01020102 A 2
+
+      shows that there is no cubical lattice in the given interval
+
+    sage generate-sublattice.sage --draw-graph --affine=1021020 A 2
+
+      shows that there is a cubical lattice in the given interval
+"""
         ,file=sys.stderr)
     sys.exit(1r)
 
