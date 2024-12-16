@@ -1,4 +1,4 @@
-# Spanning cubical sublattice
+# Spanning cubical lattice
 
 [![DOI](https://zenodo.org/badge/903949776.svg)](https://doi.org/10.5281/zenodo.14498455)
 
