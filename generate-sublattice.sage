@@ -1,5 +1,7 @@
 #!/usr/bin/env sage
 
+import sys
+
 def simplify_polynomial(terms):
     total_length = 0
     for i in range(len(terms)):
@@ -171,11 +173,11 @@ Example:
 
     sage generate-sublattice.sage --draw-graph --affine=1021020 A 2"""
         ,file=sys.stderr)
-    exit(1)
+    sys.exit(1r)
 
 def print_err(message):
     print(message, file=sys.stderr)
-    exit(1)
+    sys.exit(1r)
 
 def numeric_check(value):
     # note that we cannot use .is_numeric here since this will accept
@@ -230,11 +232,49 @@ def file_prefix(ctype, max_element):
     else:
         print_err("An unknown error occured in 'file_prefix'")
 
+
+def compute_position(coordinate,zz=1):
+    if len(coordinate) == 2:
+        return tuple(coordinate)
+    elif len(coordinate) == 3:
+        z,y,x = tuple(coordinate)
+        
+        #SQRT2 = 1.41421356237310
+        
+        return (
+            (x-y)*(zz-1),
+            (x+y)*(zz-1)+0.9*z,
+        )
+    else:
+        raise "err"
+
+def write3d_graph(graph, cert, pdf_fname, sizes):
+    zz = 1
+    if len(sizes) == 3: zz = sizes[2]
+
+    size_multi = sizes[1]
+    if len(sizes) == 3: size_multi = size_multi + sizes[2]
+
+    position = {}
+    for sn, ln in cert.items():
+        position[sn] = compute_position(tuple(ln), zz)
+    G = graph.plot(
+        vertex_labels=False,
+        pos=position,
+        figsize=(2 * size_multi, 2 * size_multi))
+    G.save_image(pdf_fname)
+
+def write_graph(graph, cert, pdf_fname, sizes, rank):
+    if sizes is not None and len(sizes) <= 3 and cert is not None:
+        write3d_graph(graph,cert,pdf_fname, sizes)
+    else:
+        G = graph.plot(vertex_labels=False)
+        G.save_image(pdf_fname, figsize=(2*rank, 2*rank))
+
 #############################################################
 # read the command line arguments
 #############################################################
 
-import sys
 
 inp_type = None
 inp_num = None
@@ -305,9 +345,14 @@ with open_file_or_die(file_prefix(ctype,e) + "_status.txt") as status_file:
     tmp = is_lattice(pos)
     
     if tmp is False:
-        print_status_line(status_file, "there is no spanning cubical lattice")
+        print_status_line(status_file, "!! there is no spanning cubical lattice")
+        
+        print_status_line(status_file, "beginnng to write graph")
+        write_graph(hasse, None, file_prefix(ctype,e)+".pdf",None, pos.rank())
+        print_status_line(status_file, "finished writing graph")
+
         print_status_line(status_file, "bye")
-        exit(0)
+        exit()
 
     # there is a lattice let's get it
     sizes, l, h, lattice_subgraph = tmp
@@ -327,6 +372,11 @@ with open_file_or_die(file_prefix(ctype,e) + "_status.txt") as status_file:
                     continue
                 line = str(k) + " ~> " + str(v.element.reduced_word())
                 f.write(line+"\n")
+
+    if inp_draw_graph:
+        print_status_line(status_file, "beginnng to write graph")
+        write_graph(hasse, cert, file_prefix(ctype,e)+".pdf",sizes, pos.rank())
+        print_status_line(status_file, "finished writing graph")
 
     print_status_line(status_file, "Finished writing an embedding of the subgraph")
     print_status_line(status_file, "bye")
