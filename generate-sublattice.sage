@@ -347,9 +347,10 @@ with open_file_or_die(file_prefix(ctype,e) + "_status.txt") as status_file:
     if tmp is False:
         print_status_line(status_file, "!! there is no spanning cubical lattice")
         
-        print_status_line(status_file, "beginnng to write graph")
-        write_graph(hasse, None, file_prefix(ctype,e)+".pdf",None, pos.rank())
-        print_status_line(status_file, "finished writing graph")
+        if inp_draw_graph:
+          print_status_line(status_file, "beginnng to write graph")
+          write_graph(hasse, None, file_prefix(ctype,e)+".pdf",None, pos.rank())
+          print_status_line(status_file, "finished writing graph")
 
         print_status_line(status_file, "bye")
         exit()
