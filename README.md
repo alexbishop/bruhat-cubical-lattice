@@ -7,7 +7,7 @@ This repository contains a SageMath script which generates the bruhat graph for 
 ## Usage
 
 ```
-Usage: sage generate-sublattice.sage [OPTIONS] TYPE NUM
+Usage: sage generate-lattice.sage [OPTIONS] TYPE NUM
 
 Attempts to find a spanning cubical lattice in a given group
 
@@ -25,15 +25,15 @@ Options:
 
 Example:
     
-    sage generate-sublattice.sage D 5
+    sage generate-lattice.sage D 5
 
       verifies that is a cubical lattice for D5
 
-    sage generate-sublattice.sage --draw-graph --affine=01020102 A 2
+    sage generate-lattice.sage --draw-graph --affine=01020102 A 2
 
       shows that there is no cubical lattice in the given interval
 
-    sage generate-sublattice.sage --draw-graph --affine=1021020 A 2
+    sage generate-lattice.sage --draw-graph --affine=1021020 A 2
 
       shows that there is a cubical lattice in the given interval
 ```
