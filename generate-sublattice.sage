@@ -151,7 +151,7 @@ def is_lattice(poset):
 
 def print_usage():
     print(
-"""Usage: generate-sublattice.sage [OPTIONS] TYPE NUM
+"""Usage: sage generate-sublattice.sage [OPTIONS] TYPE NUM
 
 Attempts to find a spanning cubical lattice in a given group
 
