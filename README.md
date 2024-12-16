@@ -1,5 +1,7 @@
 # Spanning cubical sublattice
 
+[![DOI](https://zenodo.org/badge/903949776.svg)](https://doi.org/10.5281/zenodo.14498455)
+
 This repository contains a SageMath script which generates the bruhat graph for Coxeter groups, and attempts to find spanning cubical lattices.
 
 For example, you can run this script for type D5 as follows.
