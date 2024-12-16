@@ -222,11 +222,11 @@ def element_or_die(W, element_desc):
 
     return e
 
-def file_prefix(cox_type):
-    if len(cox_type) == 2:
-        return cox_type[0] + "_" + str(cox_type[1])
-    elif len(cox_type) == 3:
-        return cox_type[0] + "_" + str(cox_type[1]) + "_tilde"
+def file_prefix(ctype, max_element):
+    if len(ctype) == 2:
+        return ctype[0] + str(ctype[1])
+    elif len(ctype) == 3:
+        return ctype[0] + str(ctype[1]) + "_tilde_" + "".join([str(s) for s in max_element.reduced_word()])
     else:
         print_err("An unknown error occured in 'file_prefix'")
 
@@ -235,7 +235,6 @@ def file_prefix(cox_type):
 #############################################################
 
 import sys
-if len(sys.argv) != 2: print_usage()
 
 inp_type = None
 inp_num = None
@@ -272,26 +271,24 @@ if inp_affine is None:
 else:
     ctype = [inp_type, inp_num, 1]
 
+W = coxeter_or_die(ctype)
+
+R.<q> =  LaurentPolynomialRing(ZZ)
+
+cox = coxeter3_or_die(W, q)
+
+if (inp_affine) is None:
+    e = W.long_element()
+else:
+    e = element_or_die(W, inp_affine)
+
 #############################################################
 #############################################################
 
-with open_file_or_die(file_prefix(ctype) + "_status.txt") as status_file:
-    W = coxeter_or_die(ctype)
-
-    R.<q> =  LaurentPolynomialRing(ZZ)
-    cox = coxeter3_or_die(W, q)
-    print_status_line(status_file, "successfully started Coxeter3")
-
-    if (inp_affine) is None:
-        e = W.long_element()
-    else:
-        e = element_or_die(W, inp_affine)
-
-    print_status_line(status_file, "successfully constructed upper bound")
-
+with open_file_or_die(file_prefix(ctype,e) + "_status.txt") as status_file:
     cox_matrix = W.coxeter_matrix()
 
-    with open(file_prefix(cox_type) + "_matrix_desc.txt", "w") as f:
+    with open(file_prefix(ctype,e) + "_matrix_desc.txt", "w") as f:
         f.write(str(cox_matrix))
 
     print_status_line(status_file, "output coxeter matrix")
@@ -321,7 +318,7 @@ with open_file_or_die(file_prefix(ctype) + "_status.txt") as status_file:
 
     invert_cert = { v: k for k,v in cert.items()}
 
-    with open(file_prefix(cox_type) + "_map.txt", "w") as f:
+    with open(file_prefix(ctype, e) + "_map.txt", "w") as f:
         for r in range(pos.rank()+1):
             f.write("\n")
             f.write("Vertices of rank "+str(r)+"\n")
