@@ -4,10 +4,38 @@
 
 This repository contains a SageMath script which generates the bruhat graph for Coxeter groups, and attempts to find spanning cubical lattices.
 
-For example, you can run this script for type D5 as follows.
+## Usage
 
-```bash
-sage generate-matching.sage D 5
+```
+Usage: sage generate-sublattice.sage [OPTIONS] TYPE NUM
+
+Attempts to find a spanning cubical lattice in a given group
+
+Arguments:
+
+    TYPE    one of A, B, C, D, E, F, G, or H
+    NUM     this is the rank of the finite Coxeter (sub)group
+
+Options:
+
+    --help              print these usage instructions
+    --draw-graph        creates a graph of the embedding if one is found
+    --affine=UPPER      use the affine Coxeter group. In this case, you
+                         need to give an upper bound for the Bruhat graph
+
+Example:
+    
+    sage generate-sublattice.sage D 5
+
+      verifies that is a cubical lattice for D5
+
+    sage generate-sublattice.sage --draw-graph --affine=01020102 A 2
+
+      shows that there is no cubical lattice in the given interval
+
+    sage generate-sublattice.sage --draw-graph --affine=1021020 A 2
+
+      shows that there is a cubical lattice in the given interval
 ```
 
 ## Requirements
