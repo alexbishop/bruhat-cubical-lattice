@@ -1,6 +1,4 @@
-# Type D Bruhat graphs
-
-**Notice:** this code has errors which will be corrected in the coming hours.
+# Spanning cubical lattices
 
 This repository contains a SageMath script which generates the bruhat graph for Coxeter groups, and attempts to find spanning cubical lattices.
 
